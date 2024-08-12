@@ -14,7 +14,6 @@ export async function POST(req) {
   try {
     // Create a chat completion request to the Gemini API
     const result = await chat.sendMessage(data[data.length - 1].parts[0].text);
-    console.log(result.response.text());
     return NextResponse.json(result.response.text() , { status: 200 });
   } catch (error) {
     return NextResponse.json({ error: `Failed to generate text: ${error.message}` }, { status: 500 }); // Handle API errors

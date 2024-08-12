@@ -1,7 +1,8 @@
 'use client'
 
-import { Box, Button, Stack, TextField } from '@mui/material'
-import { useState } from 'react'
+import { Box, Button, Stack, TextField } from '@mui/material';
+import { useState } from 'react';
+import ReactMarkdown from 'react-markdown';
 
 export default function Home() {
   const [messages, setMessages] = useState([
@@ -45,7 +46,7 @@ export default function Home() {
           let otherMessages = messages.slice(0, messages.length - 1)  // Get all other messages
           return [
             ...otherMessages,
-            { ...lastMessage, parts: [{text: lastMessage.parts[0].text + text }] },  // Append the decoded text to the assistant's message
+            { ...lastMessage, parts: [{text: lastMessage.parts[0].text + text.replace(/"/g, '') }] },  // Append the decoded text to the assistant's message
           ]
         })
         return reader.read().then(processText)  // Continue reading the next chunk of the response
@@ -95,7 +96,9 @@ export default function Home() {
                 borderRadius={16}
                 p={3}
               >
-                {message.parts[0].text}
+                  <ReactMarkdown>
+                    {message.parts[0].text.replace(/\\n/g, ' ')}
+                  </ReactMarkdown>
               </Box>
             </Box>
           ))}
